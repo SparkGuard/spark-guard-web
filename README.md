@@ -1,8 +1,24 @@
-# React + Vite
+# Искра | Spark
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Антиплагиат система, разработанная студентами НИУ ВШЭ с Факультета Компьютерных Наук Программной Инженерии.
 
-Currently, two official plugins are available:
+# Контакты:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Александр [@kerblif](https://t.me/kerblif) Лазаренко
+- Михаил [@Mikhail_0811](https://t.me/Mikhail_0811) Крамаренко
+- Микаэл [@returntozer0](https://t.me/returntozer0) Оганесян
+
+# Используемый стек
+
+1. Web-интерфейс
+   * React.js, Refine.js
+   * MaterialUI
+   * Tailwind.css
+   * Mocha (for Unit tests)
+2. Backend
+   * Golang
+   * Python ?
+   * C# ?
+
+# О проекте
+Lorem ipsum...
