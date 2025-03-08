@@ -14,29 +14,29 @@ export const UserProfileShow = () => {
         <Show isLoading={isLoading}>
             <Stack gap={1}>
                 <Typography variant="body1" fontWeight="bold">
-                    {"ID"}
+                    {"Дата регистрации"}
                 </Typography>
-                <TextField value={user?.id} />
+                <TextField value={"21.08.2024"} />
 
                 <Typography variant="body1" fontWeight="bold">
-                    {"Name"}
+                    {"Организация"}
                 </Typography>
-                <TextField value={user?.name} />
+                <TextField value={"Высшая Школа Экономики"} />
 
                 <Typography variant="body1" fontWeight="bold">
-                    {"Email"}
+                    {"Статус"}
                 </Typography>
-                <TextField value={user?.email} />
+                <TextField value={"Преподаватель"} />
 
                 <Typography variant="body1" fontWeight="bold">
-                    {"Role"}
+                    {"Файлы в обработке"}
                 </Typography>
-                <TextField value={user?.role} />
+                <TextField value={"Подробнее"} />
 
                 <Typography variant="body1" fontWeight="bold">
-                    {"Created At"}
+                    {"Привязанная почта"}
                 </Typography>
-                <DateField value={user?.createdAt} />
+                <DateField value={"maoganesian@edu.hse.ru"} />
             </Stack>
         </Show>
     );
