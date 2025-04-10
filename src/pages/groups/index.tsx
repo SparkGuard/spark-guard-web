@@ -3,6 +3,8 @@ import React from "react";
 import { useDataGrid } from "@refinedev/mui";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
+console.log(localStorage.getItem("my_access_token"));
+
 const GroupsTable: React.FC = () => {
     const { dataGridProps } = useDataGrid<IProduct>({
         resource: "groups",
@@ -56,7 +58,6 @@ const EventsTable: React.FC = () => {
 interface IProduct {
     id: number;
     name: string;
-    price: string;
 }
 
 
@@ -69,7 +70,7 @@ export const GroupsPage = () => {
 
     return (
         <div>
-            <h1>Groups</h1>
+            <h1>Группы работ и события</h1>
             <GroupsTable/>
             <EventsTable/>
         </div>

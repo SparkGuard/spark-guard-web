@@ -56,7 +56,7 @@ export const authProvider: AuthProvider = {
     },
     updatePassword: async (params) => { throw new Error("Not implemented"); },
     getIdentity: async () => {
-        const response = await fetch("https://api.fake-rest.refine.dev/auth/me", {
+        const response = await fetch("http://217.12.40.66:8080/users/me", {
             headers: {
                 Authorization: localStorage.getItem("my_access_token"),
             },
