@@ -1,0 +1,56 @@
+.
+├── Dockerfile
+├── README.MD
+├── dist
+│   ├── assets
+│   │   ├── img-34a93864.png
+│   │   └── index-b6c6d5a8.js
+│   ├── favicon.ico
+│   ├── img.png
+│   └── index.html
+├── index.html
+├── package-lock.json
+├── package.json
+├── project-structure.txt
+├── public
+│   ├── favicon.ico
+│   └── img.png
+├── src
+│   ├── App.tsx
+│   ├── assets
+│   │   ├── img.png
+│   │   └── img_hq.png
+│   ├── components
+│   │   ├── login.tsx
+│   │   └── logoutButton.tsx
+│   ├── index.tsx
+│   ├── pages
+│   │   ├── about
+│   │   │   └── index.tsx
+│   │   ├── account
+│   │   │   └── index.tsx
+│   │   ├── error
+│   │   │   └── index.tsx
+│   │   ├── forgot_password
+│   │   │   └── index.tsx
+│   │   ├── groups
+│   │   │   └── index.tsx
+│   │   ├── sending
+│   │   │   └── index.tsx
+│   │   └── settings
+│   │       └── index.tsx
+│   ├── products
+│   │   ├── edit.tsx
+│   │   ├── list.tsx
+│   │   └── show.tsx
+│   ├── providers
+│   │   ├── auth-provider.ts
+│   │   └── data-provider.ts
+│   ├── styles
+│   │   └── style.css
+│   └── vite-env.d.ts
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+18 directories, 36 files
