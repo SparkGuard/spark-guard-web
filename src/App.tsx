@@ -9,7 +9,7 @@ import SparkLogo from "./assets/img.png"
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import ClearAllOutlinedIcon from '@mui/icons-material/ClearAllOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import WebhookOutlinedIcon from '@mui/icons-material/WebhookOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 // Menu Icons
 
@@ -36,10 +36,10 @@ function App() {
         <PermIdentityOutlinedIcon />,
         <SendOutlinedIcon />,
         <ClearAllOutlinedIcon />,
-        <SettingsOutlinedIcon />,
+        <WebhookOutlinedIcon />,
         <InfoOutlinedIcon />,
     ];
-
+    console.log(localStorage.getItem("my_access_token"));
     return (
         <Refine dataProvider={dataProvider} authProvider={authProvider}>
             <CssBaseline />
@@ -73,7 +73,7 @@ function App() {
                                 />
                         </Box>
                         <List sx={{ marginTop: 2 }}>
-                            {['Мой аккаунт', 'Отправка', 'Группы работ', 'Настройки', 'О системе'].map((text, index) => (
+                            {['Мой аккаунт', 'Отправка', 'Группы работ', 'Контакты', 'О системе'].map((text, index) => (
                                 <ListItem
                                     sx={{ marginTop: index === 3 ? "90%" : 2 }}
                                     key={text}
@@ -101,7 +101,7 @@ function App() {
                             <Route path="/мой-аккаунт" element={<AccountPage/>} />
                             <Route path="/отправка" element={<SendingPage/>} />
                             <Route path="/группы-работ" element={<GroupsPage/>} />
-                            <Route path="/настройки" element={<SettingsPage/>} />
+                            <Route path="/контакты" element={<SettingsPage/>} />
                             <Route path="/о-системе" element={<AboutPage/>} />
                             <Route path="*" element={<ErrorPage />} />
                         </Routes>

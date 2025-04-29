@@ -70,7 +70,6 @@ export const GroupsPage = () => {
 
     return (
         <div>
-            <h1>Группы работ и события</h1>
             <GroupsTable/>
             <EventsTable/>
         </div>

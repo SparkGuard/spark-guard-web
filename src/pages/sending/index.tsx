@@ -125,12 +125,11 @@ export const SendingPage = () => {
     const [taskStatuses, setTaskStatuses] = useState<Record<number, string>>({});
 
     // Определение следующего ID для новой работы
-    const nextId = useMemo(() => {
+    useMemo(() => {
         if (!worksData?.data || worksData.data.length === 0) return 1;
         const maxId = Math.max(...worksData.data.map(work => work.id));
         return maxId + 1;
     }, [worksData]);
-
     // Обработчик выбора файла
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -155,7 +154,6 @@ export const SendingPage = () => {
             const currentTime = new Date().toISOString();
             const workData = {
                 event: selectedEvent,
-                id: nextId,
                 student: parseInt(studentId),
                 time: currentTime
             };
@@ -174,14 +172,13 @@ export const SendingPage = () => {
                 throw new Error(`Ошибка при создании работы: ${createResponse.status} - ${text}`);
             }
 
-            // 2. Явно ждем, пока работа будет доступна на сервере
-            await waitForWorkToBeAvailable(nextId);
+            const createdWork = await createResponse.json(); // Получаем ID созданной работы
 
-            // 3. Загружаем файл
+            // 2. Загружаем файл
             const formData = new FormData();
             formData.append("file", selectedFile);
 
-            const uploadResponse = await fetch(`http://217.12.40.66:8080/works/${nextId}/upload`, {
+            const uploadResponse = await fetch(`http://217.12.40.66:8080/works/${createdWork.id}/upload`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${authToken}`,
@@ -203,6 +200,7 @@ export const SendingPage = () => {
 
             // Обновляем таблицу
             setRefreshKey(prev => prev + 1);
+
         } catch (error) {
             console.error("Ошибка при отправке работы:", error);
             showNotification(
@@ -212,35 +210,6 @@ export const SendingPage = () => {
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    // Новая вспомогательная функция для проверки доступности работы
-    const waitForWorkToBeAvailable = async (workId: number) => {
-        const maxAttempts = 5;
-        const delayMs = 500;
-
-        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-            try {
-                const response = await fetch(`http://217.12.40.66:8080/works/${workId}`, {
-                    headers: {
-                        "Authorization": `Bearer ${authToken}`,
-                    },
-                });
-
-                if (response.ok) {
-                    return; // Работа доступна
-                }
-            } catch (error) {
-                console.warn(`Попытка ${attempt}: Работа еще не доступна`, error);
-            }
-
-            // Ждем перед следующей попыткой
-            if (attempt < maxAttempts) {
-                await new Promise(resolve => setTimeout(resolve, delayMs));
-            }
-        }
-
-        throw new Error(`Работа ${workId} не стала доступна после ${maxAttempts} попыток`);
     };
 
     // Загрузка имен событий и статусов задач для таблицы
@@ -270,7 +239,7 @@ export const SendingPage = () => {
 
     const fetchTaskStatus = async (workId: number) => {
         try {
-            const response = await fetch(`http://217.12.40.66:8080/tasks/${workId}`, {
+            const response = await fetch(`http://217.12.40.66:8080/works/${workId}/tasks`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${authToken}`,
@@ -285,7 +254,8 @@ export const SendingPage = () => {
             }
 
             const taskData: ITask = await response.json();
-            return taskData.status || "Неизвестно";
+            const lastTask = taskData[0]
+            return lastTask.status || "Неизвестно";
         } catch (error) {
             console.error(`Ошибка при загрузке задачи для работы ${workId}:`, error);
             return "Неизвестно";
@@ -361,6 +331,16 @@ export const SendingPage = () => {
 
     // Скачивание отчета
     const handleReportDownloadClick = async (workId: number) => {
+        const status = taskStatuses[workId]
+        if (status == "In queue" || status == "In work") {
+            showNotification(
+                `Пожалуйста, дождитесь, пока статус работы станет "Completed"`,
+                "warning"
+            );
+            return;
+        }
+
+
         try {
             const response = await fetch(`http://217.12.40.66:8080/works/${workId}/adoptions/download`, {
                 method: "GET",
@@ -488,16 +468,12 @@ export const SendingPage = () => {
                 </Alert>
             </Snackbar>
 
-            <Typography variant="h4" component="h1" gutterBottom>
-                Отправка работ
+            <Typography sx={{marginBottom: "48px"}} variant="h6" component="h3" gutterBottom>
+                Отправка новой работы
             </Typography>
 
             {/* Форма отправки работы */}
-            <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-                <Typography variant="h6" component="h3" gutterBottom>
-                    Новая работа
-                </Typography>
-
+            <Box sx={{ p: 3, mb: 4, border: '1px solid', borderColor: 'divider', borderRadius: '4px'  }}>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={4}>
@@ -566,13 +542,9 @@ export const SendingPage = () => {
                         </Grid>
                     </Grid>
                 </form>
-            </Paper>
+            </Box>
 
-            {/* Таблица работ */}
-            <Typography variant="h5" component="h2" gutterBottom>
-                Отправленные работы
-            </Typography>
-            <Box sx={{ height: 600, width: '100%' }}>
+            <Box sx={{ height: 'auto', width: '100%' }}>
                 <DataGrid
                     {...dataGridProps}
                     columns={columns}
