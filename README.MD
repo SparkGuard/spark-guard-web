@@ -1,39 +1,22 @@
-# refine-project
+# Spark Guard
 
 <div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img alt="refine logo" src="https://refine.ams3.cdn.digitaloceanspaces.com/readme/refine-readme-banner.png">
-    </a>
+    <img alt="refine logo" src="../spark-guard-web/src/assets/img.png">
 </div>
 <br/>
 
-This [Refine](https://github.com/refinedev/refine) project was generated with [create refine-app](https://github.com/refinedev/refine/tree/master/packages/create-refine-app).
+Искра - интеллектуальная система анализа кода, которая выявляет плагиат в исходном коде.
 
-## Getting Started
+## Authors
+- Александр @kerblif Лазаренко
 
-A React Framework for building internal tools, admin panels, dashboards & B2B apps with unmatched flexibility ✨
+- Михаил @Mikhail_0811 Крамаренко
 
-Refine's hooks and components simplifies the development process and eliminates the repetitive tasks by providing industry-standard solutions for crucial aspects of a project, including authentication, access control, routing, networking, state management, and i18n.
+- Микаэл @returntozer0 Оганесян
 
-## Available Scripts
 
-### Running the development server.
+## Description
 
-```bash
-    npm run dev
-```
-
-### Building for production.
-
-```bash
-    npm run build
-```
-
-### Running the production server.
-
-```bash
-    npm run start
-```
 
 ## Learn More
 

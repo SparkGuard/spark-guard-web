@@ -41,30 +41,57 @@ export const dataProvider: DataProvider = {
         return { data };
     },
 
-    // Получение списка ресурсов
     getList: async ({ resource, pagination, filters, sorters, meta }) => {
         const token = localStorage.getItem("my_access_token");
-        let url = `${API_URL}/${resource}`;
+        const url = new URL(`${API_URL}/${resource}`);
+        const params = new URLSearchParams();
 
-        // Добавляем пагинацию, если она указана
+        // Пагинация
         if (pagination) {
-            const { current, pageSize } = pagination;
-            url += `?page=${current}&size=${pageSize}`;
+            const { current = 1, pageSize = 10 } = pagination;
+            params.append('page', current.toString());
+            params.append('size', pageSize.toString());
         }
 
-        // Добавляем сортировку, если указана
+        // Сортировка
         if (sorters && sorters.length > 0) {
-            const sortParams = sorters.map((sorter) => `sort=${sorter.field},${sorter.order}`).join("&");
-            url += `${pagination ? "&" : "?"}${sortParams}`;
+            sorters.forEach(sorter => {
+                if (sorter.field && sorter.order) {
+                    params.append('sort', `${sorter.field},${sorter.order}`);
+                }
+            });
         }
 
-        // Добавляем фильтры, если указаны (предполагаем простой формат)
+        // Фильтрация
         if (filters && filters.length > 0) {
-            const filterParams = filters.map((filter) => `${filter.field}=${filter.value}`).join("&");
-            url += `${pagination || sorters ? "&" : "?"}${filterParams}`;
+            filters.forEach(filter => {
+                // Обработка логических фильтров (and/or)
+                if ('key' in filter && filter.key === 'and') {
+                    // Здесь можно обработать сложные условия and/or
+                    console.warn('Complex filters (and/or) not implemented');
+                    return;
+                }
+
+                // Базовый фильтр с полем и значением
+                if ('field' in filter && 'value' in filter) {
+                    const operator = filter.operator || 'eq';
+
+                    // Простая фильтрация (field=value)
+                    if (operator === 'eq') {
+                        params.append(filter.field, filter.value);
+                    }
+                    // Фильтрация с оператором (field[operator]=value)
+                    else {
+                        params.append(`${filter.field}[${operator}]`, filter.value);
+                    }
+                }
+            });
         }
 
-        const response = await fetch(url, {
+        // Добавляем параметры в URL
+        url.search = params.toString();
+
+        const response = await fetch(url.toString(), {
             headers: {
                 "Content-Type": "application/json",
                 ...(token && { Authorization: `Bearer ${token}` }),
@@ -72,14 +99,14 @@ export const dataProvider: DataProvider = {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to fetch list of ${resource}: ${response.statusText}`);
+            throw new Error(`Failed to fetch ${resource}: ${response.statusText}`);
         }
 
         const data = await response.json();
-        // Предполагаем, что API возвращает массив или объект с полями data и total
+
         return {
-            data: Array.isArray(data) ? data : data.data || [],
-            total: data.total || 0, // Уточни в Swagger, как API возвращает общее количество
+            data: Array.isArray(data) ? data : data?.data || [],
+            total: data?.total || data?.length || 0,
         };
     },
 

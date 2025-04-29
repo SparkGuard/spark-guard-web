@@ -56,9 +56,14 @@ export const authProvider: AuthProvider = {
     },
     updatePassword: async (params) => { throw new Error("Not implemented"); },
     getIdentity: async () => {
+        const token = localStorage.getItem("my_access_token");
+
+        // Если токена нет, возвращаем null
+        if (!token) return null;
+
         const response = await fetch("http://217.12.40.66:8080/users/me", {
             headers: {
-                Authorization: localStorage.getItem("my_access_token"),
+                "Authorization": `Bearer ${token}`, // Добавляем "Bearer"
             },
         });
 
@@ -66,9 +71,7 @@ export const authProvider: AuthProvider = {
             return null;
         }
 
-        const data = await response.json();
-
-        return data;
+        return await response.json();
     },
     getPermissions: async () => { throw new Error("Not implemented"); },
 };

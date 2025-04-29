@@ -28,7 +28,6 @@ import {SettingsPage} from "./pages/settings";
 import {ErrorPage} from "./pages/error";
 import {Login} from "./components/login";
 import {LogoutButton} from "./components/logoutButton";
-import {ForgotPasswordPage} from "./pages/forgot_password";
 //Pages for React.router
 
 function App() {
@@ -97,7 +96,6 @@ function App() {
 
                             {/*Change routes to components*/}
                             <Route path="/" element={<AccountPage/>} />
-                            <Route path="/забыл-пароль" element={<ForgotPasswordPage/>} />
                             <Route path="/мой-аккаунт" element={<AccountPage/>} />
                             <Route path="/отправка" element={<SendingPage/>} />
                             <Route path="/группы-работ" element={<GroupsPage/>} />

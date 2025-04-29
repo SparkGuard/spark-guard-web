@@ -254,6 +254,7 @@ export const SendingPage = () => {
             }
 
             const taskData: ITask = await response.json();
+            // @ts-ignore
             const lastTask = taskData[0]
             return lastTask.status || "Неизвестно";
         } catch (error) {
@@ -331,15 +332,23 @@ export const SendingPage = () => {
 
     // Скачивание отчета
     const handleReportDownloadClick = async (workId: number) => {
-        const status = taskStatuses[workId]
-        if (status == "In queue" || status == "In work") {
-            showNotification(
-                `Пожалуйста, дождитесь, пока статус работы станет "Completed"`,
-                "warning"
-            );
-            return;
+        try {
+            const status = taskStatuses[workId]
+            if (status == "In queue" || status == "In work") {
+                showNotification(
+                    `Пожалуйста, дождитесь, пока статус работы станет "Completed"`,
+                    "warning"
+                );
+                return;
+            }
         }
-
+        catch (error) {
+            console.error("Ошибка при скачивании отчета:", error);
+            showNotification(
+                `Не удалось скачать отчет: ${error instanceof Error ? error.message : String(error)}`,
+                "error"
+            );
+        }
 
         try {
             const response = await fetch(`http://217.12.40.66:8080/works/${workId}/adoptions/download`, {
